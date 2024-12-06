@@ -25,13 +25,10 @@ int main () {
 	cout << k << endl;
 	bool only_increment;
 	bool only_decrement;
-	vector<vector<int> > vov;
-    for (int i = 0; i < k; ++i) {
-        vector<int> vec(i, i);
-        input.push_back(vec);
+    for (int j = 0; j < k; j++) {
+        int diff = input[i+1] - input[i];
+		int add = input[i+1] + input[i];
     }
-
-
 
 	return 0;
 }
