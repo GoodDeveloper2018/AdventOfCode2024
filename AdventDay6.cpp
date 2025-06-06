@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Directions encoded as 0=Up, 1=Right, 2=Down, 3=Left.
-static const int DR[4] = {-1, 0, 1, 0};
-static const int DC[4] = {0, 1, 0, -1};
+static const int direction_row[4] = {-1, 0, 1, 0};
+static const int direction_column[4] = {0, 1, 0, -1};
 
 // Rotates the direction 90 degrees to the right
 int turnRight(int dir) {
@@ -14,7 +13,7 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    // Read the entire map (grid) until EOF.
+    // Read the entire map
     vector<string> grid;
     {
         string line;
@@ -23,9 +22,6 @@ int main() {
             if (!line.empty()) {
                 grid.push_back(line);
             } else {
-                // If you want to include empty lines as part of the map, 
-                // uncomment the next line. Otherwise, skip them.
-                // grid.push_back("");
             }
         }
     }
@@ -38,7 +34,7 @@ int main() {
     int rows = (int)grid.size();
     int cols = (int)grid[0].size();
 
-    // Find guard's starting position and direction
+    // Find guard starting position and direction
     int startR = -1, startC = -1;
     int dir = -1; // 0=Up, 1=Right, 2=Down, 3=Left
 
@@ -72,24 +68,22 @@ int main() {
     // Set of visited positions
     set<pair<int,int>> visited;
     // Current position
-    int guardR = startR;
-    int guardC = startC;
+    int guardirection_row = startR;
+    int guardirection_column = startC;
 
     // Mark the start as visited
-    visited.insert({guardR, guardC});
+    visited.insert({guardirection_row, guardirection_column});
 
     while (true) {
-        // 1) Check if obstacle is in front or out of bounds
-        int nr = guardR + DR[dir];
-        int nc = guardC + DC[dir];
+        int nr = guardirection_row + direction_row[dir];
+        int nc = guardirection_column + direction_column[dir];
 
         bool obstacle = false;
         if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) {
-            // Next step is out of the map -> guard leaves
             break;
         }
         if (grid[nr][nc] == '#') {
-            // There's an obstacle
+            // There an obstacle
             obstacle = true;
         }
 
@@ -98,9 +92,9 @@ int main() {
             dir = turnRight(dir);
         } else {
             // Move forward
-            guardR = nr;
-            guardC = nc;
-            visited.insert({guardR, guardC});
+            guardirection_row = nr;
+            guardirection_column = nc;
+            visited.insert({guardirection_row, guardirection_column});
         }
     }
 
