@@ -1,3 +1,5 @@
+/* REDACTED I DON'T WANT TO DO THIS IN C++ BECAUSE I EXCEED RUNTIME AND IDK WHY*/
+
 #include <bits/stdc++.h>
 using namespace std;
 
