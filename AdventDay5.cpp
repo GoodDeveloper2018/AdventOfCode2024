@@ -1,77 +1,55 @@
-/* REDACTED I DON'T WANT TO DO THIS IN C++ BECAUSE I EXCEED RUNTIME AND IDK WHY*/
-
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
+long long partOne() {
     int T;
-    cin >> T;
+    if (!(cin >> T)) return 0;
 
-    vector<int> initials(T), afters(T);
-    for (int i = 0; i < T; i++) {
-        string ruleLine;
-        cin >> ruleLine;
-
-        char delimiter = '|';
-        size_t pos = ruleLine.find(delimiter);
-        int xVal = stoi(ruleLine.substr(0, pos));
-        int yVal = stoi(ruleLine.substr(pos + 1));
-        initials[i] = xVal;
-        afters[i] = yVal;
+    vector<int> X(T), Y(T);
+    for (int i = 0; i < T; ++i) {
+        string s;
+        cin >> s;
+        size_t bar = s.find('|');
+        if (bar == string::npos) continue;
+        int xVal = stoi(s.substr(0, bar));
+        int yVal = stoi(s.substr(bar + 1));
+        X[i] = xVal;
+        Y[i] = yVal;
     }
-
-    long long sumOfMiddles = 0;
-    int correctUpdatesCount = 0;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    while (true) {
-        string line;
-        if (!getline(cin, line)) {
-            break;
-        }
-        if (line.empty()) {
-            continue;
-        }
 
-        vector<int> updatePages;
-        {
-            stringstream ss(line);
-            while (ss.good()) {
-                string token;
-                if (!getline(ss, token, ',')) break;
-                updatePages.push_back(stoi(token));
-            }
+    long long sumMid = 0;
+    string line;
+    while (getline(cin, line)) {
+        vector<int> pages;
+        string token;
+        stringstream ss(line);
+        while (getline(ss, token, ',')) {
+            if (token.empty()) continue;
+            pages.push_back(stoi(token));
         }
+        if (pages.empty()) continue;
 
-        if (updatePages.empty()) {
-            continue;
-        }
+        unordered_map<int, int> pos;
+        for (int i = 0; i < (int)pages.size(); ++i) pos[pages[i]] = i;
 
-        unordered_map<int, int> indexOf;
-        for (int i = 0; i < (int)updatePages.size(); i++) {
-            indexOf[updatePages[i]] = i;
-        }
+        bool ok = true;
+        for (int i = 0; i < T && ok; ++i)
+            if (pos.count(X[i]) && pos.count(Y[i]) && pos[X[i]] >= pos[Y[i]]) ok = false;
 
-        bool isCorrect = true;
-        for (int i = 0; i < T; i++) {
-            int xVal = initials[i];
-            int yVal = afters[i];
-            if (indexOf.find(xVal) != indexOf.end() && indexOf.find(yVal) != indexOf.end()) {
-                if (indexOf[xVal] >= indexOf[yVal]) {
-                    isCorrect = false;
-                    break;
-                }
-            }
-        }
-
-        if (isCorrect) {
-            correctUpdatesCount++;
-            int n = (int)updatePages.size();
-            int midIndex = n / 2;
-            sumOfMiddles += updatePages[midIndex];
-        }
+        if (ok) sumMid += pages[pages.size() / 2];
     }
+    return sumMid;
+}
 
-    cout << sumOfMiddles << "\n";
+long long partTwo() {
+    return partOne();
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout << partOne() << '\n';
     return 0;
 }
