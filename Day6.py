@@ -1,13 +1,15 @@
-def partOne():
+def fileReader():
     grid = []
-    while True:
-        try:
-            line = input().strip()
+    with open("data6", "r") as f:
+        for line in f:
+            line = line.rstrip("\n")
             if line:
                 grid.append(list(line))
-        except EOFError:
-            break
+    return grid
 
+
+def partOne():
+    grid = fileReader()
     R, C = len(grid), len(grid[0])
     dirs = ['^', '>', 'v', '<']
     dx = [-1, 0, 1, 0]
@@ -28,16 +30,9 @@ def partOne():
             x, y = nx, ny
     return len(visited)
 
-def partTwo():
-    grid = []
-    while True:
-        try:
-            line = input().strip()
-            if line:
-                grid.append(list(line))
-        except EOFError:
-            break
 
+def partTwo():
+    grid = fileReader()
     R, C = len(grid), len(grid[0])
     dirs = ['^', '>', 'v', '<']
     dx = [-1, 0, 1, 0]
@@ -72,6 +67,7 @@ def partTwo():
                 if would_loop(r, c):
                     count += 1
     return count
+
 
 if __name__ == "__main__":
     print(partOne())
